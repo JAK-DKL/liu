@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Star Pets Hanzi Quest</title>
-    <link rel="stylesheet" href="styles.css?v=save-levels-1" />
+    <link rel="stylesheet" href="styles.css?v=compact-sound-1" />
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js" defer></script>
-    <script src="app.js?v=save-levels-1" defer></script>
+    <script src="app.js?v=compact-sound-1" defer></script>
   </head>
   <body>
     <div class="space-bg" aria-hidden="true">
@@ -43,7 +43,7 @@
             <span><strong id="galaxy">1</strong> Galaxy</span>
           </div>
           <div class="hud-actions">
-            <button id="save-button" type="button">Save</button>
+            <button id="save-button" class="save-progress-button" type="button">Save</button>
           </div>
         </header>
 
@@ -149,6 +149,7 @@
               <div class="action-row">
                 <button id="demo-button" type="button">Stroke Demo</button>
                 <button id="hint-button" type="button">Hint</button>
+                <button id="quick-save-button" class="save-progress-button" type="button">Save</button>
                 <button id="next-button" type="button" hidden>Next</button>
               </div>
               <p id="writer-status" class="writer-status" aria-live="polite">Answer first, then trace directly in the grid once.</p>
