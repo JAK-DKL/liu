@@ -109,8 +109,6 @@ const els = {
   petAvatar: document.querySelector("#pet-avatar"),
   petName: document.querySelector("#pet-name"),
   evolutionName: document.querySelector("#evolution-name"),
-  fullSetAvatar: document.querySelector("#full-set-avatar"),
-  fullSetCount: document.querySelector("#full-set-count"),
   xpFill: document.querySelector("#xp-fill"),
   xpLabel: document.querySelector("#xp-label"),
   gearSlots: document.querySelector("#gear-slots"),
@@ -140,6 +138,7 @@ const els = {
   evolutionModal: document.querySelector("#evolution-modal"),
   evolutionMessage: document.querySelector("#evolution-message"),
   evolutionClose: document.querySelector("#evolution-close"),
+  fxLayer: document.querySelector("#fx-layer"),
 };
 
 function currentLesson() {
@@ -221,7 +220,6 @@ function updatePetVisual() {
   ].join(" ");
   els.petName.textContent = state.selectedPet.name;
   els.evolutionName.textContent = evolutionName();
-  renderFullSetPreview();
 }
 
 function renderGearSlots() {
@@ -242,21 +240,6 @@ function renderGearSlots() {
   });
   const equippedCount = Object.keys(state.equipped).length;
   els.gearCount.textContent = `${equippedCount} / ${gearPool.length} equipped`;
-  renderFullSetPreview();
-}
-
-function renderFullSetPreview() {
-  const stage = evolutionStage();
-  const gearPool = currentGearPool();
-  els.fullSetAvatar.className = [
-    "pet-avatar",
-    "preview-avatar",
-    state.selectedPet.className,
-    `evo-${stage}`,
-    ...gearPool.map((gear) => gear.className),
-  ].join(" ");
-  const equippedCount = Object.keys(state.equipped).length;
-  els.fullSetCount.textContent = `${equippedCount} / ${gearPool.length} collected`;
 }
 
 function gearArt(gear) {
@@ -322,6 +305,46 @@ function gearArt(gear) {
   return art[gear.art] || `<span class="reward-icon">${gear.icon}</span>`;
 }
 
+function flyFxToPet(sourceRect, content, className, options = {}) {
+  if (!els.fxLayer || !sourceRect || !els.petAvatar) return;
+  const targetRect = els.petAvatar.getBoundingClientRect();
+  const sourceX = sourceRect.left + sourceRect.width / 2 + (options.offsetX || 0);
+  const sourceY = sourceRect.top + sourceRect.height / 2 + (options.offsetY || 0);
+  const targetX = targetRect.left + targetRect.width / 2;
+  const targetY = targetRect.top + targetRect.height / 2;
+  const fx = document.createElement("span");
+  fx.className = className;
+  fx.style.left = `${sourceX}px`;
+  fx.style.top = `${sourceY}px`;
+  fx.style.setProperty("--fly-x", `${targetX - sourceX}px`);
+  fx.style.setProperty("--fly-y", `${targetY - sourceY}px`);
+  fx.style.setProperty("--fly-delay", `${options.delay || 0}ms`);
+  fx.innerHTML = content;
+  els.fxLayer.appendChild(fx);
+  fx.addEventListener("animationend", () => fx.remove(), { once: true });
+}
+
+function flyStarsToPet(sourceElement, label = "+XP") {
+  if (!sourceElement) return;
+  const rect = sourceElement.getBoundingClientRect();
+  const starCount = 7;
+  for (let index = 0; index < starCount; index += 1) {
+    const offsetX = (Math.random() - 0.5) * rect.width * 0.72;
+    const offsetY = (Math.random() - 0.5) * rect.height * 0.72;
+    flyFxToPet(
+      rect,
+      index === 0 ? `<strong>${label}</strong><span>★</span>` : "<span>★</span>",
+      "fly-fx fly-star",
+      { delay: index * 55, offsetX, offsetY },
+    );
+  }
+}
+
+function flyGearToPet(gear, sourceElement) {
+  const rect = sourceElement?.getBoundingClientRect();
+  flyFxToPet(rect, gearArt(gear), "fly-fx fly-gear");
+}
+
 function updateStats() {
   els.score.textContent = state.score;
   els.petLevel.textContent = state.petLevel;
@@ -379,6 +402,7 @@ function checkAnswer(answer, button) {
     state.score += 20;
     state.completed[lesson.char] = true;
     addXp(20, "Correct answer! +20 pet XP.", { deferProgressModal: true });
+    flyStarsToPet(button, "+20 XP");
     state.lessonReadyForNext = true;
     els.nextButton.hidden = false;
     playAutoStrokeDemoThenTrace();
@@ -462,18 +486,21 @@ function openRewardModal() {
       <strong>${gear.name}</strong>
       <small>${gear.type || "gear"}</small>
     `;
-    button.addEventListener("click", () => equipGear(gear));
+    button.addEventListener("click", () => equipGear(gear, button));
     els.rewardOptions.appendChild(button);
   });
   els.rewardModal.hidden = false;
 }
 
-function equipGear(gear) {
+function equipGear(gear, sourceElement) {
+  flyGearToPet(gear, sourceElement);
   state.equipped[gear.id] = gear;
   els.rewardModal.hidden = true;
-  renderGearSlots();
-  updatePetVisual();
-  els.coach.textContent = `${gear.name} equipped. Keep learning to unlock more upgrades.`;
+  window.setTimeout(() => {
+    renderGearSlots();
+    updatePetVisual();
+    els.coach.textContent = `${gear.name} equipped. Keep learning to unlock more upgrades.`;
+  }, 640);
 }
 
 function openEvolutionModal() {
@@ -641,7 +668,10 @@ function playAutoStrokeDemoThenTrace() {
       window.setTimeout(() => showPendingProgressModals(), 300);
     },
   });
-  if (!started) updateTraceVisual();
+  if (!started) {
+    updateTraceVisual();
+    window.setTimeout(() => showPendingProgressModals(), 700);
+  }
 }
 
 function startTraceWhenWriterReady(round, attempts = 0) {
@@ -702,6 +732,7 @@ function startTrace() {
       state.traced[lesson.char] = true;
       updateTraceVisual();
       addXp(bonus, `Trace complete! +${bonus} bonus pet XP.`);
+      flyStarsToPet(els.writerFrame, `+${bonus} XP`);
       els.writerStatus.textContent = `Trace complete. Mistakes: ${summary.totalMistakes}. Tap Next when ready.`;
     },
   });
