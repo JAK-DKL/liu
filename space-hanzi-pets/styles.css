@@ -133,7 +133,7 @@ button:disabled {
   width: min(1180px, calc(100vw - 28px));
   margin: 0 auto;
   min-height: 100vh;
-  padding: 24px 0;
+  padding: 16px 0;
   display: grid;
   align-items: center;
 }
@@ -156,7 +156,7 @@ p {
 
 h1 {
   margin-bottom: 0;
-  font-size: clamp(2rem, 5vw, 4.2rem);
+  font-size: clamp(1.8rem, 4.2vw, 3.3rem);
   line-height: 0.95;
   text-shadow: 0 0 28px rgba(97, 231, 255, 0.35);
 }
@@ -227,7 +227,7 @@ h2 {
   gap: 16px;
   align-items: end;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .hud-stats {
@@ -265,7 +265,7 @@ h2 {
 .game-grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.86fr) minmax(0, 1.14fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .pet-panel {
@@ -279,7 +279,7 @@ h2 {
 }
 
 .pet-scene {
-  min-height: 330px;
+  min-height: 260px;
   border-radius: 8px;
   background:
     radial-gradient(circle at 50% 90%, rgba(97, 231, 255, 0.24), transparent 28%),
@@ -405,19 +405,19 @@ h2 {
 }
 
 .mission-panel {
-  padding: clamp(16px, 3vw, 26px);
+  padding: clamp(12px, 2vw, 18px);
 }
 
 .mission-head {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .learn-row {
   display: grid;
-  grid-template-columns: 170px 1fr;
-  gap: 12px;
+  grid-template-columns: 132px 1fr;
+  gap: 10px;
   align-items: stretch;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .hanzi-card,
@@ -428,11 +428,11 @@ h2 {
 }
 
 .hanzi-card {
-  min-height: 160px;
+  min-height: 118px;
   display: grid;
   place-items: center;
   font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
-  font-size: 5.3rem;
+  font-size: 4.3rem;
   color: #ffffff;
   text-shadow: 0 0 22px rgba(97, 231, 255, 0.42);
 }
@@ -497,7 +497,7 @@ h2 {
 .quiz-card,
 .writer-card {
   padding: 14px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .quiz-card {
@@ -540,7 +540,7 @@ h2 {
 }
 
 .gear-orbit-preview {
-  margin-top: 12px;
+  margin-top: 8px;
   padding: 10px;
   border: 1px solid rgba(142, 226, 255, 0.32);
   border-radius: 8px;
@@ -640,9 +640,9 @@ h2 {
 }
 
 .writer-frame {
-  width: min(100%, 360px);
+  width: min(100%, 300px);
   aspect-ratio: 1;
-  margin: 12px auto;
+  margin: 8px auto;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   position: relative;
@@ -651,20 +651,8 @@ h2 {
 }
 
 .writer-frame::after {
-  content: "Trace here";
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  padding: 0.34rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(16, 22, 63, 0.78);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 900;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 180ms ease, transform 180ms ease;
-  pointer-events: none;
+  content: "";
+  display: none;
 }
 
 .writer-frame.trace-ready {
@@ -674,8 +662,7 @@ h2 {
 }
 
 .writer-frame.trace-ready::after {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
 }
 
 .writer-frame.trace-complete {
@@ -716,7 +703,7 @@ h2 {
 }
 
 .action-row button {
-  flex: 1 1 130px;
+  flex: 1 1 104px;
 }
 
 .modal {
@@ -1177,6 +1164,180 @@ h2 {
 .has-gloves .right-glove {
   right: 34px;
   transform: rotate(-16deg);
+}
+
+@media (min-width: 901px) {
+  .mission-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
+    gap: 10px;
+    align-items: start;
+  }
+
+  .mission-head,
+  .learn-row {
+    grid-column: 1 / -1;
+  }
+
+  .quiz-card,
+  .writer-card {
+    margin-top: 0;
+  }
+
+  .choices {
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  .choice {
+    min-height: 50px;
+    padding-block: 0.58rem;
+  }
+
+  .writer-frame {
+    width: min(100%, 260px);
+  }
+}
+
+@media (max-height: 780px) and (min-width: 901px) {
+  button {
+    padding: 0.58rem 0.78rem;
+  }
+
+  .app-shell {
+    align-items: start;
+    padding-block: 8px;
+  }
+
+  .eyebrow,
+  .label {
+    margin-bottom: 0.12rem;
+    font-size: 0.66rem;
+  }
+
+  .hud h1 {
+    font-size: 1.85rem;
+  }
+
+  .hud-stats span {
+    padding: 0.42rem 0.55rem;
+    font-size: 0.76rem;
+  }
+
+  .hud-stats strong {
+    font-size: 1.08rem;
+  }
+
+  .pet-card,
+  .gear-panel,
+  .mission-panel,
+  .quiz-card,
+  .writer-card {
+    padding: 10px;
+  }
+
+  .pet-scene {
+    min-height: 220px;
+  }
+
+  .pet-avatar {
+    transform: translateY(2px) scale(0.88);
+  }
+
+  .pet-info {
+    padding-top: 8px;
+  }
+
+  .pet-info h2,
+  .pet-info p,
+  #xp-label {
+    margin-bottom: 0.32rem;
+  }
+
+  .gear-slots {
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .gear-slot {
+    min-height: 64px;
+    padding: 0.32rem;
+  }
+
+  .gear-slot .gear-art {
+    width: 44px;
+    height: 34px;
+  }
+
+  .gear-slot span {
+    font-size: 0.58rem;
+  }
+
+  .mission-head {
+    margin-bottom: 0;
+  }
+
+  .mission-head h2 {
+    margin-bottom: 0;
+    font-size: 1.35rem;
+  }
+
+  .learn-row {
+    grid-template-columns: 108px 1fr;
+    margin-bottom: 0;
+  }
+
+  .hanzi-card {
+    min-height: 92px;
+    font-size: 3.45rem;
+  }
+
+  .pinyin-card {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .pinyin-card #pinyin {
+    font-size: 2rem;
+  }
+
+  .pinyin-cover {
+    left: 10px;
+    min-width: 76px;
+    min-height: 52px;
+    font-size: 1.8rem;
+  }
+
+  .pinyin-card small {
+    font-size: 0.82rem;
+  }
+
+  .gear-orbit-preview {
+    grid-template-columns: minmax(0, 1fr) 86px;
+    padding: 7px;
+  }
+
+  .gear-orbit-stage {
+    width: 82px;
+    height: 82px;
+  }
+
+  .orbit-gear {
+    --orbit-radius: 32px;
+    width: 26px;
+    height: 22px;
+  }
+
+  .writer-frame {
+    width: min(100%, 218px);
+    margin: 6px auto;
+  }
+
+  .coach-message,
+  .writer-status {
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
 }
 
 @media (max-width: 900px) {
