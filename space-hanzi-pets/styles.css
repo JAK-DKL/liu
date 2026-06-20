@@ -1267,26 +1267,40 @@ h2 {
     font-size: 0.72rem;
   }
 
-  .pet-panel,
-  .pet-card {
-    grid-template-columns: 1fr;
+  .game-grid {
+    gap: 8px;
+  }
+
+  .pet-panel {
+    display: contents;
   }
 
   .pet-card {
     display: grid;
-    grid-template-columns: 124px 1fr;
-    gap: 10px;
+    order: 1;
+    grid-template-columns: 86px 1fr;
+    gap: 8px;
     align-items: center;
+    min-height: 92px;
   }
 
   .pet-card .pet-scene {
-    min-height: 118px;
+    min-height: 80px;
     overflow: visible;
   }
 
   .pet-card .pet-avatar {
-    transform: scale(0.46);
-    margin: -54px -34px -58px;
+    transform: scale(0.36);
+    margin: -70px -48px -78px;
+  }
+
+  .pet-info {
+    min-width: 0;
+  }
+
+  .pet-info h2 {
+    font-size: 1.2rem;
+    line-height: 1.1;
   }
 
   .pet-info h2,
@@ -1298,7 +1312,12 @@ h2 {
     height: 9px;
   }
 
+  .mission-panel {
+    order: 2;
+  }
+
   .gear-panel {
+    order: 3;
     margin-top: -2px;
   }
 
