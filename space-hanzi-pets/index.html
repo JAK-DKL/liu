@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star Pets Hanzi Quest</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="space-bg" aria-hidden="true">
+      <span class="planet planet-one"></span>
+      <span class="planet planet-two"></span>
+      <span class="orbit orbit-one"></span>
+      <span class="orbit orbit-two"></span>
+      <span class="star s1"></span>
+      <span class="star s2"></span>
+      <span class="star s3"></span>
+      <span class="star s4"></span>
+    </div>
+
+    <main class="app-shell">
+      <section class="start-screen" id="start-screen" aria-labelledby="start-title">
+        <div class="start-copy">
+          <p class="eyebrow">Space Hanzi Academy</p>
+          <h1 id="start-title">Star Pets Hanzi Quest</h1>
+          <p>Choose a space buddy, learn characters, win gear, and evolve into a cosmic champion.</p>
+        </div>
+        <div class="pet-select" id="pet-select" aria-label="Choose your animal explorer"></div>
+      </section>
+
+      <section class="game-screen" id="game-screen" hidden>
+        <header class="hud">
+          <div>
+            <p class="eyebrow">Galaxy Mission</p>
+            <h1>Star Pets Hanzi Quest</h1>
+          </div>
+          <div class="hud-stats" aria-label="Game stats">
+            <span><strong id="score">0</strong> Score</span>
+            <span><strong id="pet-level">1</strong> Pet Lv</span>
+            <span><strong id="galaxy">1</strong> Galaxy</span>
+          </div>
+        </header>
+
+        <div class="game-grid">
+          <aside class="pet-panel" aria-label="Animal explorer">
+            <div class="pet-card">
+              <div class="pet-scene">
+                <div id="pet-avatar" class="pet-avatar pet-fox evo-1">
+                  <span class="ear left-ear"></span>
+                  <span class="ear right-ear"></span>
+                  <span class="face">
+                    <span class="eye left-eye"></span>
+                    <span class="eye right-eye"></span>
+                    <span class="nose"></span>
+                    <span class="smile"></span>
+                  </span>
+                  <span class="body"></span>
+                  <span class="tail"></span>
+                  <span class="gear gear-helmet"></span>
+                  <span class="gear gear-jetpack"></span>
+                  <span class="gear gear-badge"></span>
+                  <span class="gear gear-boots left-boot"></span>
+                  <span class="gear gear-boots right-boot"></span>
+                  <span class="gear gear-cape"></span>
+                  <span class="gear gear-shield"></span>
+                  <span class="gear gear-orb"></span>
+                  <span class="gear gear-gloves left-glove"></span>
+                  <span class="gear gear-gloves right-glove"></span>
+                </div>
+              </div>
+              <div class="pet-info">
+                <h2 id="pet-name">Nova Fox</h2>
+                <p id="evolution-name">Rookie Explorer</p>
+                <div class="xp-bar" aria-label="Pet experience">
+                  <span id="xp-fill"></span>
+                </div>
+                <p id="xp-label">0 / 100 XP</p>
+              </div>
+            </div>
+
+            <section class="gear-panel" aria-labelledby="gear-title">
+              <div class="section-head">
+                <h2 id="gear-title">Gear</h2>
+                <span id="gear-count">0 equipped</span>
+              </div>
+              <div id="gear-slots" class="gear-slots"></div>
+              <div class="set-preview" aria-label="Full gear set preview">
+                <div class="set-preview-copy">
+                  <p class="label">Full Set Preview</p>
+                  <strong id="full-set-count">0 / 8 collected</strong>
+                </div>
+                <div class="mini-stage">
+                  <div id="full-set-avatar" class="pet-avatar pet-fox evo-1">
+                    <span class="ear left-ear"></span>
+                    <span class="ear right-ear"></span>
+                    <span class="face">
+                      <span class="eye left-eye"></span>
+                      <span class="eye right-eye"></span>
+                      <span class="nose"></span>
+                      <span class="smile"></span>
+                    </span>
+                    <span class="body"></span>
+                    <span class="tail"></span>
+                    <span class="gear gear-helmet"></span>
+                    <span class="gear gear-jetpack"></span>
+                    <span class="gear gear-badge"></span>
+                    <span class="gear gear-boots left-boot"></span>
+                    <span class="gear gear-boots right-boot"></span>
+                    <span class="gear gear-cape"></span>
+                    <span class="gear gear-shield"></span>
+                    <span class="gear gear-orb"></span>
+                    <span class="gear gear-gloves left-glove"></span>
+                    <span class="gear gear-gloves right-glove"></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </aside>
+
+          <section class="mission-panel" aria-label="Learning mission">
+            <div class="mission-head">
+              <div>
+                <p class="label">Mission</p>
+                <h2 id="task-title">Choose the pinyin for this character</h2>
+              </div>
+              <button id="sound-button" type="button">Sound</button>
+            </div>
+
+            <div class="learn-row">
+              <div class="hanzi-card">
+                <span id="current-char">你</span>
+              </div>
+              <div class="pinyin-card" id="pinyin-card">
+                <span id="pinyin" aria-hidden="true">nǐ</span>
+                <span id="pinyin-cover" class="pinyin-cover" aria-label="Pinyin hidden">?</span>
+                <small id="meaning">你 / you · 你好</small>
+              </div>
+            </div>
+
+            <section class="quiz-card" aria-labelledby="quiz-title">
+              <div class="section-head">
+                <h2 id="quiz-title">Pinyin Quest</h2>
+                <span id="progress">0 / 6</span>
+              </div>
+              <div id="choices" class="choices"></div>
+              <p id="coach-message" class="coach-message" aria-live="polite">Pick the right pinyin to power the rocket.</p>
+            </section>
+
+            <section class="writer-card" aria-label="Tracing zone">
+              <div class="section-head">
+                <h2>Trace Bonus</h2>
+                <span>Direct trace +30 XP</span>
+              </div>
+              <div class="writer-frame">
+                <svg id="writer-target" class="tianzi-grid" viewBox="0 0 320 320" role="img" aria-label="Tianzi grid tracing area">
+                  <rect x="1" y="1" width="318" height="318" rx="12"></rect>
+                  <line x1="160" y1="0" x2="160" y2="320"></line>
+                  <line x1="0" y1="160" x2="320" y2="160"></line>
+                  <line class="dash" x1="0" y1="0" x2="320" y2="320"></line>
+                  <line class="dash" x1="320" y1="0" x2="0" y2="320"></line>
+                  <text id="fallback-character" x="160" y="224" text-anchor="middle">你</text>
+                </svg>
+              </div>
+              <div class="action-row">
+                <button id="demo-button" type="button">Stroke Demo</button>
+                <button id="hint-button" type="button">Hint</button>
+                <button id="next-button" type="button" hidden>Next</button>
+              </div>
+              <p id="writer-status" class="writer-status" aria-live="polite">Answer first, then trace directly in the grid once.</p>
+            </section>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="reward-modal" hidden role="dialog" aria-labelledby="reward-title" aria-modal="true">
+      <div class="modal-card">
+        <p class="eyebrow">Level-Up Reward</p>
+        <h2 id="reward-title">Choose one gear item</h2>
+        <p>Your animal leveled up. Pick one upgrade to equip right away.</p>
+        <div id="reward-options" class="reward-options"></div>
+      </div>
+    </div>
+
+    <div class="modal" id="evolution-modal" hidden role="dialog" aria-labelledby="evolution-title" aria-modal="true">
+      <div class="modal-card evolution-card">
+        <p class="eyebrow">Evolution</p>
+        <h2 id="evolution-title">Your pet evolved!</h2>
+        <p id="evolution-message">A stronger cosmic form has awakened.</p>
+        <button id="evolution-close" type="button">Continue</button>
+      </div>
+    </div>
+  </body>
+</html>
