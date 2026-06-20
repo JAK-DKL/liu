@@ -113,6 +113,9 @@ const els = {
   xpLabel: document.querySelector("#xp-label"),
   gearSlots: document.querySelector("#gear-slots"),
   gearCount: document.querySelector("#gear-count"),
+  gearOrbitStage: document.querySelector("#gear-orbit-stage"),
+  gearOrbitAvatar: document.querySelector("#gear-orbit-avatar"),
+  gearOrbitCount: document.querySelector("#gear-orbit-count"),
   score: document.querySelector("#score"),
   petLevel: document.querySelector("#pet-level"),
   galaxy: document.querySelector("#galaxy"),
@@ -240,6 +243,33 @@ function renderGearSlots() {
   });
   const equippedCount = Object.keys(state.equipped).length;
   els.gearCount.textContent = `${equippedCount} / ${gearPool.length} equipped`;
+  renderGearOrbitPreview();
+}
+
+function renderGearOrbitPreview() {
+  if (!els.gearOrbitStage || !els.gearOrbitAvatar || !els.gearOrbitCount) return;
+  const gearPool = currentGearPool();
+  const equippedCount = Object.keys(state.equipped).length;
+  const featuredGear = [
+    ...gearPool.filter((gear) => state.equipped[gear.id]),
+    ...gearPool.filter((gear) => !state.equipped[gear.id]),
+  ].slice(0, 6);
+  els.gearOrbitAvatar.textContent = state.selectedPet.name.charAt(0);
+  els.gearOrbitCount.textContent = `${equippedCount} / ${gearPool.length} online`;
+  els.gearOrbitStage.querySelectorAll(".orbit-gear").forEach((item) => item.remove());
+  featuredGear.forEach((gear, index) => {
+    const item = document.createElement("span");
+    const owned = Boolean(state.equipped[gear.id]);
+    item.className = `orbit-gear ${owned ? "is-online" : "is-locked"}`;
+    item.style.setProperty("--orbit-angle", `${index * 60}deg`);
+    item.style.setProperty("--orbit-end", `${index * 60 + 360}deg`);
+    item.style.setProperty("--counter-angle", `${index * -60}deg`);
+    item.style.setProperty("--counter-end", `${index * -60 - 360}deg`);
+    item.style.setProperty("--orbit-delay", `${index * -0.82}s`);
+    item.title = gear.name;
+    item.innerHTML = gearArt(gear);
+    els.gearOrbitStage.appendChild(item);
+  });
 }
 
 function gearArt(gear) {
