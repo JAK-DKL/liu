@@ -96,13 +96,13 @@ function renderBank() {
     button.className = "char-token";
     button.type = "button";
     button.textContent = item.char;
-    button.setAttribute("aria-label", `练习 ${item.char}，拼音 ${item.pinyin}`);
+    button.setAttribute("aria-label", `Practice ${item.char}, pinyin ${item.pinyin}`);
     button.disabled = isLevelComplete();
     if (index === state.index) button.classList.add("current");
     if (state.completed[item.char]) button.classList.add("mastered");
     button.addEventListener("click", () => {
       state.index = index;
-      loadLesson("手动切换到了新汉字。");
+      loadLesson("You picked a new character.");
     });
     els.characterBank.appendChild(button);
   });
@@ -146,13 +146,13 @@ function checkPinyin(answer, button) {
     state.mastery[lesson.char] += 1;
     state.completed[lesson.char] = true;
     setPinyinRevealed(true);
-    coach(`答对了！字芽把 ${lesson.char} 和 ${lesson.pinyin} 连起来了。`);
+    coach(`Correct! Xiaoya matched ${lesson.char} with ${lesson.pinyin}.`);
   } else {
     button.classList.add("wrong");
     showAnswerFeedback(false, "Try again!");
     state.streak = 0;
     state.mastery[lesson.char] = Math.max(0, state.mastery[lesson.char] - 1);
-    coach(`差一点。${lesson.char} 读 ${lesson.pinyin}，词语可以记成“${lesson.word}”。`);
+    coach(`Almost. ${lesson.char} is read as ${lesson.pinyin}. Remember it with "${lesson.word}".`);
   }
 
   updateStats();
@@ -279,7 +279,7 @@ function playCorrectStrokeDemo(round) {
 function sayCurrent() {
   const lesson = currentLesson();
   if (!("speechSynthesis" in window)) {
-    coach(`读音是 ${lesson.pinyin}。这个浏览器暂时不能朗读。`);
+    coach(`The pinyin is ${lesson.pinyin}. This browser cannot play speech right now.`);
     return;
   }
 
@@ -288,7 +288,7 @@ function sayCurrent() {
   utterance.lang = "zh-CN";
   utterance.rate = 0.78;
   window.speechSynthesis.speak(utterance);
-  coach(`听读音：${lesson.char}，${lesson.pinyin}。`);
+  coach(`Listen: ${lesson.char}, ${lesson.pinyin}.`);
 }
 
 function buildWriter(lesson) {
@@ -355,7 +355,7 @@ function loadLesson(reason = "") {
 
 function animateCurrent() {
   if (!state.writerReady || !state.writer) {
-    coach("笔顺动画需要 Hanzi Writer 加载成功；现在先用田字格认形。");
+    coach("The stroke demo is still loading. Use the grid to study the shape for now.");
     return;
   }
   state.writer.cancelQuiz();
@@ -371,7 +371,7 @@ function animateCurrent() {
 function startStrokeQuiz() {
   const lesson = currentLesson();
   if (!state.writerReady || !state.writer) {
-    coach(`描红需要加载笔顺库。先记住：${lesson.char} 读 ${lesson.pinyin}。`);
+    coach(`Tracing needs the stroke tool. For now, remember: ${lesson.char} is ${lesson.pinyin}.`);
     return;
   }
 
@@ -389,7 +389,7 @@ function startStrokeQuiz() {
       state.streak = 0;
       updateStats();
       els.writerStatus.textContent = "Try that stroke again. Follow the highlight.";
-      coach(`小芽发现第 ${strokeData.strokeNum + 1} 笔最容易错，慢一点会更稳。`);
+      coach(`Xiaoya noticed stroke ${strokeData.strokeNum + 1} is tricky. Slow strokes work better.`);
     },
     onComplete(summary) {
       state.quizActive = false;
@@ -400,8 +400,8 @@ function startStrokeQuiz() {
       renderBank();
       els.writerStatus.textContent = `Trace complete. Mistakes: ${summary.totalMistakes}.`;
       coach(summary.totalMistakes === 0
-        ? `漂亮，${lesson.char} 的字形和笔顺都很稳。`
-        : `完成了！下次重点留意 ${lesson.char} 的起笔和收笔。`);
+        ? `Nice! The shape and stroke order for ${lesson.char} look steady.`
+        : `Done! Next time, watch the start and end of each ${lesson.char} stroke.`);
     },
   });
 }
@@ -409,10 +409,10 @@ function startStrokeQuiz() {
 function giveHint() {
   const lesson = currentLesson();
   const hints = [
-    `${lesson.char} 的拼音是 ${lesson.pinyin}，可以和词语“${lesson.word}”一起记。`,
-    "田字格中间的横竖线用来帮你判断字的重心。",
-    "先看整体结构，再看第一笔从哪里开始，会更容易写准。",
-    "读一遍拼音，再描一遍笔顺，记忆会更牢。",
+    `${lesson.char} is pronounced ${lesson.pinyin}. Remember it with "${lesson.word}".`,
+    "Use the center lines in the grid to keep the character balanced.",
+    "Look at the whole shape first, then find where the first stroke begins.",
+    "Say the pinyin once, then trace the strokes once. That helps memory stick.",
   ];
   coach(hints[Math.floor(Math.random() * hints.length)]);
 }
@@ -426,6 +426,6 @@ els.nextLevelButton.addEventListener("click", goToNextLevel);
 window.addEventListener("load", () => {
   loadLesson();
   window.setTimeout(() => {
-    if (!state.writerReady && window.HanziWriter) loadLesson("笔顺库已加载，可以开始描红。");
+    if (!state.writerReady && window.HanziWriter) loadLesson("Stroke data is ready. You can trace now.");
   }, 500);
 });
