@@ -1208,6 +1208,10 @@ h2 {
     gap: 10px;
   }
 
+  .start-copy {
+    display: block;
+  }
+
   .start-copy p:last-child {
     margin-bottom: 0;
     font-size: 0.94rem;
@@ -1219,17 +1223,33 @@ h2 {
   }
 
   .pet-option {
-    min-height: 146px;
-    padding: 10px;
-    gap: 6px;
+    min-height: 214px;
+    padding: 12px 10px;
+    gap: 8px;
+    align-content: space-between;
   }
 
   .pet-option .pet-avatar {
-    width: 122px;
-    height: 146px;
-    transform: scale(0.62);
+    width: 190px;
+    height: 230px;
+    transform: scale(0.58);
     transform-origin: center;
-    margin: -26px 0 -30px;
+    margin: -46px 0 -58px;
+  }
+
+  .pet-option > strong,
+  .pet-option > span {
+    position: relative;
+    z-index: 2;
+    line-height: 1.15;
+  }
+
+  .pet-option > strong {
+    font-size: 0.98rem;
+  }
+
+  .pet-option > span {
+    font-size: 0.78rem;
   }
 
   .hud {
@@ -1253,15 +1273,20 @@ h2 {
   }
 
   .pet-card {
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 124px 1fr;
+    gap: 10px;
+    align-items: center;
   }
 
   .pet-card .pet-scene {
-    min-height: 154px;
+    min-height: 118px;
+    overflow: visible;
   }
 
   .pet-card .pet-avatar {
-    transform: scale(0.6);
+    transform: scale(0.46);
+    margin: -54px -34px -58px;
   }
 
   .pet-info h2,
@@ -1271,6 +1296,14 @@ h2 {
 
   .xp-bar {
     height: 9px;
+  }
+
+  .gear-panel {
+    margin-top: -2px;
+  }
+
+  .gear-panel .section-head {
+    align-items: center;
   }
 
   .section-head,
@@ -1326,6 +1359,7 @@ h2 {
   .gear-slots {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 6px;
+    margin-top: 8px;
   }
 
   .gear-slot {
@@ -1347,7 +1381,7 @@ h2 {
   }
 
   .set-preview {
-    grid-template-columns: 1fr 104px;
+    display: none;
   }
 
   .mini-stage {
