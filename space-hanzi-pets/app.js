@@ -188,6 +188,7 @@ const state = {
   strokeDemoPlaying: false,
   pendingEvolution: false,
   pendingLevelReward: false,
+  speechUtterance: null,
   round: 0,
 };
 
@@ -227,6 +228,7 @@ const els = {
   hintButton: document.querySelector("#hint-button"),
   nextButton: document.querySelector("#next-button"),
   saveButton: document.querySelector("#save-button"),
+  saveButtons: document.querySelectorAll(".save-progress-button"),
   rewardModal: document.querySelector("#reward-modal"),
   rewardOptions: document.querySelector("#reward-options"),
   evolutionModal: document.querySelector("#evolution-modal"),
@@ -342,6 +344,7 @@ function startGame(pet) {
 }
 
 function saveGame() {
+  if (!state.selectedPet) return;
   const saveData = {
     selectedPetId: state.selectedPet.id,
     index: state.index,
@@ -356,6 +359,7 @@ function saveGame() {
   };
   localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
   els.coach.textContent = "Progress saved. You can continue from this browser.";
+  els.writerStatus.textContent = "Saved. Your pet, level, gear, and lesson progress are stored here.";
   if (els.continueButton) els.continueButton.hidden = false;
 }
 
@@ -961,16 +965,50 @@ function startTrace() {
 
 function sayCurrent() {
   const lesson = currentLesson();
-  if (!("speechSynthesis" in window)) {
-    els.coach.textContent = `The pinyin is ${lesson.pinyin}.`;
+  const synth = window.speechSynthesis;
+  if (!synth || !window.SpeechSynthesisUtterance) {
+    els.coach.textContent = `Sound is not available here. The pinyin is ${lesson.pinyin}.`;
     return;
   }
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(lesson.char);
-  utterance.lang = "zh-CN";
-  utterance.rate = 0.78;
-  window.speechSynthesis.speak(utterance);
-  els.coach.textContent = `Listen: ${lesson.char}, ${lesson.pinyin}.`;
+
+  const speak = () => {
+    const voices = synth.getVoices();
+    const chineseVoice = voices.find((voice) => /zh|Chinese|Mandarin/i.test(`${voice.lang} ${voice.name}`));
+    synth.cancel();
+    if (synth.paused) synth.resume();
+    const utterance = new SpeechSynthesisUtterance(lesson.char);
+    utterance.lang = chineseVoice?.lang || "zh-CN";
+    utterance.voice = chineseVoice || null;
+    utterance.rate = 0.78;
+    utterance.pitch = 1.08;
+    utterance.volume = 1;
+    utterance.onerror = () => {
+      els.coach.textContent = `This device blocked the voice. The pinyin is ${lesson.pinyin}.`;
+    };
+    state.speechUtterance = utterance;
+    synth.speak(utterance);
+    els.coach.textContent = chineseVoice
+      ? `Listen: ${lesson.char}, ${lesson.pinyin}.`
+      : `Trying system voice. If silent, enable a Chinese voice on this device.`;
+  };
+
+  if (synth.getVoices().length) {
+    speak();
+    return;
+  }
+
+  els.coach.textContent = "Loading the system voice. Tap Sound again if it stays quiet.";
+  window.setTimeout(speak, 180);
+}
+
+function warmSpeechVoices() {
+  const synth = window.speechSynthesis;
+  if (!synth) return;
+  synth.getVoices();
+}
+
+if (window.speechSynthesis) {
+  window.speechSynthesis.addEventListener("voiceschanged", warmSpeechVoices);
 }
 
 function giveHint() {
@@ -999,7 +1037,7 @@ els.writerFrame.addEventListener("pointerdown", () => {
 });
 els.hintButton.addEventListener("click", giveHint);
 els.nextButton.addEventListener("click", goToNextLesson);
-els.saveButton.addEventListener("click", saveGame);
+els.saveButtons.forEach((button) => button.addEventListener("click", saveGame));
 els.continueButton.addEventListener("click", continueSavedGame);
 els.evolutionClose.addEventListener("click", () => {
   els.evolutionModal.hidden = true;
