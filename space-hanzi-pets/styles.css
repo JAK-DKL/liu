@@ -390,42 +390,6 @@ h2 {
   opacity: 1;
 }
 
-.set-preview {
-  display: grid;
-  grid-template-columns: 1fr 128px;
-  gap: 10px;
-  align-items: center;
-  margin-top: 14px;
-  padding: 10px;
-  border: 1px dashed rgba(142, 226, 255, 0.42);
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 78% 38%, rgba(255, 209, 102, 0.16), transparent 5rem),
-    rgba(255, 255, 255, 0.06);
-}
-
-.set-preview-copy strong {
-  display: block;
-  color: var(--gold);
-}
-
-.mini-stage {
-  position: relative;
-  height: 132px;
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 50% 80%, rgba(124, 255, 178, 0.28), transparent 44%),
-    rgba(255, 255, 255, 0.07);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-
-.mini-stage .preview-avatar {
-  transform: scale(0.52);
-  transform-origin: center;
-}
-
 .mission-panel {
   padding: clamp(16px, 3vw, 26px);
 }
@@ -1057,20 +1021,6 @@ h2 {
   transform: rotate(-16deg);
 }
 
-.mini-stage .preview-avatar,
-.mini-stage .preview-avatar.evo-2,
-.mini-stage .preview-avatar.evo-3 {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translate(-50%, -50%) scale(0.52);
-  filter: drop-shadow(0 0 18px rgba(255, 209, 102, 0.22));
-}
-
-.mini-stage .preview-avatar.evo-3::after {
-  inset: 5px -14px auto;
-}
-
 @media (max-width: 900px) {
   .app-shell {
     align-items: start;
@@ -1139,10 +1089,6 @@ h2 {
 
   .gear-slots {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .set-preview {
-    grid-template-columns: 1fr 120px;
   }
 
   .writer-frame {
@@ -1400,20 +1346,6 @@ h2 {
     font-size: 0.52rem;
   }
 
-  .set-preview {
-    display: none;
-  }
-
-  .mini-stage {
-    height: 96px;
-  }
-
-  .mini-stage .preview-avatar,
-  .mini-stage .preview-avatar.evo-2,
-  .mini-stage .preview-avatar.evo-3 {
-    transform: translate(-50%, -50%) scale(0.45);
-  }
-
   .writer-frame {
     width: min(100%, 286px);
   }
@@ -1444,10 +1376,6 @@ h2 {
   .pet-select,
   .choices,
   .reward-options {
-    grid-template-columns: 1fr;
-  }
-
-  .set-preview {
     grid-template-columns: 1fr;
   }
 
@@ -1645,6 +1573,64 @@ h2 {
   }
 }
 
+.fx-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fly-fx {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  animation: flyToPet 980ms cubic-bezier(0.16, 0.85, 0.27, 1.02) var(--fly-delay, 0ms) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.fly-star {
+  min-width: 28px;
+  min-height: 28px;
+  color: var(--gold);
+  font-size: 1.55rem;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(255, 209, 102, 0.9), 0 0 26px rgba(97, 231, 255, 0.4);
+}
+
+.fly-star strong {
+  position: absolute;
+  left: 50%;
+  bottom: 72%;
+  min-width: 58px;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 1000;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.72);
+}
+
+.fly-gear {
+  width: 76px;
+  height: 60px;
+  padding: 7px;
+  border: 1px solid rgba(142, 226, 255, 0.58);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.32), transparent 42%),
+    rgba(17, 23, 68, 0.92);
+  box-shadow: 0 0 24px rgba(97, 231, 255, 0.36);
+}
+
+.fly-gear .gear-art {
+  width: 100%;
+  height: 100%;
+}
+
 @keyframes twinkle {
   0%, 100% { opacity: 0.45; transform: scale(0.85); }
   50% { opacity: 1; transform: scale(1.25); }
@@ -1685,4 +1671,28 @@ h2 {
 @keyframes floatOrb {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes flyToPet {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.66) rotate(-8deg);
+    filter: brightness(1);
+  }
+
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(-16px) scale(1.08) rotate(8deg);
+    filter: brightness(1.25);
+  }
+
+  82% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--fly-x), var(--fly-y)) scale(0.28) rotate(18deg);
+    filter: brightness(1.4);
+  }
 }
