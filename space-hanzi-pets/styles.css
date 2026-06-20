@@ -563,7 +563,7 @@ h2 {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   position: relative;
-  touch-action: none;
+  touch-action: pan-y;
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
@@ -586,6 +586,7 @@ h2 {
 
 .writer-frame.trace-ready {
   cursor: crosshair;
+  touch-action: none;
   box-shadow: 0 0 0 5px rgba(124, 255, 178, 0.22), 0 0 34px rgba(97, 231, 255, 0.4);
 }
 
@@ -1452,6 +1453,195 @@ h2 {
 
   .writer-frame {
     width: min(100%, 260px);
+  }
+}
+
+@media (max-width: 560px) {
+  .game-screen .app-shell,
+  .app-shell {
+    padding-block: 6px;
+  }
+
+  .hud {
+    gap: 5px;
+    margin-bottom: 6px;
+  }
+
+  .hud .eyebrow {
+    margin-bottom: 0.1rem;
+    font-size: 0.62rem;
+  }
+
+  .hud h1 {
+    font-size: 1.34rem;
+  }
+
+  .hud-stats {
+    gap: 5px;
+  }
+
+  .hud-stats span {
+    padding: 0.28rem 0.22rem;
+    font-size: 0.62rem;
+  }
+
+  .hud-stats strong {
+    font-size: 1rem;
+  }
+
+  .pet-card,
+  .mission-panel,
+  .quiz-card,
+  .writer-card {
+    padding: 8px;
+  }
+
+  .mission-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(144px, 0.78fr);
+    gap: 7px;
+  }
+
+  .pet-card {
+    grid-template-columns: 66px 1fr;
+    min-height: 76px;
+  }
+
+  .pet-card .pet-scene {
+    min-height: 58px;
+  }
+
+  .pet-card .pet-avatar {
+    transform: scale(0.29);
+    margin: -84px -62px -88px;
+  }
+
+  .pet-info h2 {
+    font-size: 1rem;
+  }
+
+  .pet-info p,
+  #xp-label {
+    font-size: 0.78rem;
+  }
+
+  .xp-bar {
+    height: 7px;
+  }
+
+  .mission-head {
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+  }
+
+  .mission-head h2 {
+    margin-bottom: 0;
+    font-size: 1.22rem;
+    line-height: 1.12;
+  }
+
+  .mission-head button {
+    padding: 0.58rem 0.68rem;
+  }
+
+  .learn-row {
+    grid-column: 1 / -1;
+    grid-template-columns: 74px 1fr;
+    gap: 7px;
+    margin-bottom: 0;
+  }
+
+  .hanzi-card {
+    min-height: 74px;
+    font-size: 2.85rem;
+  }
+
+  .pinyin-card {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .pinyin-card #pinyin {
+    font-size: 1.65rem;
+  }
+
+  .pinyin-cover {
+    min-width: 72px;
+    min-height: 48px;
+    font-size: 1.65rem;
+  }
+
+  .pinyin-card small {
+    font-size: 0.82rem;
+  }
+
+  .quiz-card,
+  .writer-card {
+    margin-top: 0;
+  }
+
+  .quiz-card .section-head h2,
+  .writer-card .section-head h2 {
+    margin-bottom: 0;
+    font-size: 1.18rem;
+  }
+
+  .writer-card .section-head span {
+    max-width: 58px;
+    text-align: right;
+    line-height: 1.05;
+    font-size: 0.78rem;
+  }
+
+  .choices {
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .choice {
+    min-height: 38px;
+    padding: 0.46rem 0.55rem;
+  }
+
+  .coach-message,
+  .writer-status {
+    min-height: 1rem;
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+
+  .writer-frame {
+    width: min(100%, 156px);
+    margin: 6px auto;
+  }
+
+  .gear-panel {
+    padding: 7px 8px;
+  }
+
+  .gear-slots {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .gear-slot {
+    min-height: 46px;
+    padding: 0.18rem;
+  }
+
+  .gear-slot .gear-art {
+    width: 32px;
+    height: 24px;
+  }
+
+  .gear-slot span {
+    display: none;
+  }
+
+  .action-row button {
+    padding: 0.46rem 0.48rem;
+    font-size: 0.72rem;
   }
 }
 
