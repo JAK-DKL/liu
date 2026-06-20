@@ -1,21 +1,110 @@
-const lessonLevels = [
-  [
-    { char: "你", pinyin: "nǐ", meaning: "你 / you", word: "你好" },
-    { char: "好", pinyin: "hǎo", meaning: "好 / good", word: "你好" },
-    { char: "人", pinyin: "rén", meaning: "人 / person", word: "人民" },
-    { char: "口", pinyin: "kǒu", meaning: "口 / mouth", word: "入口" },
-    { char: "日", pinyin: "rì", meaning: "日 / sun", word: "日子" },
-    { char: "月", pinyin: "yuè", meaning: "月 / moon", word: "月亮" },
-  ],
-  [
-    { char: "大", pinyin: "dà", meaning: "大 / big", word: "大家" },
-    { char: "小", pinyin: "xiǎo", meaning: "小 / small", word: "小手" },
-    { char: "中", pinyin: "zhōng", meaning: "中 / middle", word: "中国" },
-    { char: "上", pinyin: "shàng", meaning: "上 / up", word: "上学" },
-    { char: "下", pinyin: "xià", meaning: "下 / down", word: "下来" },
-    { char: "天", pinyin: "tiān", meaning: "天 / sky", word: "天空" },
-  ],
+const SAVE_KEY = "starPetsHanziQuestSaveV1";
+
+const hanziRows = [
+  ["你", "nǐ", "你 / you", "你好"],
+  ["好", "hǎo", "好 / good", "你好"],
+  ["人", "rén", "人 / person", "人民"],
+  ["口", "kǒu", "口 / mouth", "入口"],
+  ["日", "rì", "日 / sun", "日子"],
+  ["月", "yuè", "月 / moon", "月亮"],
+  ["树", "shù", "树 / tree", "树叶"],
+  ["叶", "yè", "叶 / leaf", "叶子"],
+  ["枝", "zhī", "枝 / branch", "树枝"],
+  ["池", "chí", "池 / pond", "池塘"],
+  ["爬", "pá", "爬 / climb", "爬山"],
+  ["跳", "tiào", "跳 / jump", "跳高"],
+  ["猴", "hóu", "猴 / monkey", "猴子"],
+  ["蚂", "mǎ", "蚂 / ant", "蚂蚁"],
+  ["蚁", "yǐ", "蚁 / ant", "蚂蚁"],
+  ["网", "wǎng", "网 / net", "网子"],
+  ["捉", "zhuō", "捉 / catch", "捉虫"],
+  ["饱", "bǎo", "饱 / full", "吃饱"],
+  ["旁", "páng", "旁 / side", "旁边"],
+  ["很", "hěn", "很 / very", "很好"],
+  ["拿", "ná", "拿 / take", "拿起"],
+  ["路", "lù", "路 / road", "路口"],
+  ["像", "xiàng", "像 / resemble", "好像"],
+  ["帮", "bāng", "帮 / help", "帮忙"],
+  ["害", "hài", "害 / harm", "害怕"],
+  ["结", "jié", "结 / tie", "结果"],
+  ["甜", "tián", "甜 / sweet", "甜点"],
+  ["掉", "diào", "掉 / fall", "掉下"],
+  ["楼", "lóu", "楼 / building", "楼房"],
+  ["炒", "chǎo", "炒 / stir-fry", "炒饭"],
+  ["茶", "chá", "茶 / tea", "茶水"],
+  ["奶", "nǎi", "奶 / milk", "牛奶"],
+  ["饭", "fàn", "饭 / meal", "米饭"],
+  ["病", "bìng", "病 / illness", "生病"],
+  ["医", "yī", "医 / doctor", "医生"],
+  ["护", "hù", "护 / protect", "护士"],
+  ["晴", "qíng", "晴 / sunny", "晴天"],
+  ["淋", "lín", "淋 / drench", "淋雨"],
+  ["雷", "léi", "雷 / thunder", "雷声"],
+  ["响", "xiǎng", "响 / sound", "响声"],
+  ["大", "dà", "大 / big", "大家"],
+  ["小", "xiǎo", "小 / small", "小手"],
+  ["中", "zhōng", "中 / middle", "中国"],
+  ["上", "shàng", "上 / up", "上学"],
+  ["下", "xià", "下 / down", "下来"],
+  ["天", "tiān", "天 / sky", "天空"],
+  ["一", "yī", "一 / one", "一个"],
+  ["二", "èr", "二 / two", "二月"],
+  ["三", "sān", "三 / three", "三天"],
+  ["四", "sì", "四 / four", "四个"],
+  ["五", "wǔ", "五 / five", "五月"],
+  ["六", "liù", "六 / six", "六个"],
+  ["七", "qī", "七 / seven", "七天"],
+  ["八", "bā", "八 / eight", "八月"],
+  ["九", "jiǔ", "九 / nine", "九个"],
+  ["十", "shí", "十 / ten", "十月"],
+  ["山", "shān", "山 / mountain", "山上"],
+  ["水", "shuǐ", "水 / water", "喝水"],
+  ["火", "huǒ", "火 / fire", "火车"],
+  ["木", "mù", "木 / wood", "木头"],
+  ["土", "tǔ", "土 / soil", "土地"],
+  ["田", "tián", "田 / field", "田地"],
+  ["爸", "bà", "爸 / dad", "爸爸"],
+  ["妈", "mā", "妈 / mom", "妈妈"],
+  ["哥", "gē", "哥 / older brother", "哥哥"],
+  ["姐", "jiě", "姐 / older sister", "姐姐"],
+  ["弟", "dì", "弟 / younger brother", "弟弟"],
+  ["妹", "mèi", "妹 / younger sister", "妹妹"],
+  ["手", "shǒu", "手 / hand", "小手"],
+  ["足", "zú", "足 / foot", "足球"],
+  ["耳", "ěr", "耳 / ear", "耳朵"],
+  ["目", "mù", "目 / eye", "目光"],
+  ["心", "xīn", "心 / heart", "开心"],
+  ["云", "yún", "云 / cloud", "白云"],
+  ["风", "fēng", "风 / wind", "大风"],
+  ["雨", "yǔ", "雨 / rain", "下雨"],
+  ["雪", "xuě", "雪 / snow", "下雪"],
+  ["花", "huā", "花 / flower", "花朵"],
+  ["草", "cǎo", "草 / grass", "小草"],
+  ["鸟", "niǎo", "鸟 / bird", "小鸟"],
+  ["鱼", "yú", "鱼 / fish", "小鱼"],
+  ["虫", "chóng", "虫 / bug", "小虫"],
+  ["车", "chē", "车 / vehicle", "汽车"],
+  ["船", "chuán", "船 / boat", "小船"],
+  ["门", "mén", "门 / door", "大门"],
+  ["窗", "chuāng", "窗 / window", "窗户"],
+  ["书", "shū", "书 / book", "书包"],
+  ["笔", "bǐ", "笔 / pen", "铅笔"],
+  ["纸", "zhǐ", "纸 / paper", "白纸"],
+  ["桌", "zhuō", "桌 / table", "桌子"],
+  ["椅", "yǐ", "椅 / chair", "椅子"],
+  ["衣", "yī", "衣 / clothes", "衣服"],
+  ["鞋", "xié", "鞋 / shoes", "鞋子"],
+  ["帽", "mào", "帽 / hat", "帽子"],
+  ["包", "bāo", "包 / bag", "书包"],
+  ["球", "qiú", "球 / ball", "皮球"],
+  ["红", "hóng", "红 / red", "红色"],
+  ["白", "bái", "白 / white", "白云"],
+  ["黑", "hēi", "黑 / black", "黑色"],
+  ["蓝", "lán", "蓝 / blue", "蓝天"],
 ];
+
+const hanziBank = hanziRows.map(([char, pinyin, meaning, word]) => ({ char, pinyin, meaning, word }));
+const lessonLevels = chunkLessons(hanziBank, 6);
 
 const pets = [
   { id: "fox", name: "Nova Fox", className: "pet-fox", tag: "Fast pilot" },
@@ -106,6 +195,7 @@ const els = {
   startScreen: document.querySelector("#start-screen"),
   gameScreen: document.querySelector("#game-screen"),
   petSelect: document.querySelector("#pet-select"),
+  continueButton: document.querySelector("#continue-button"),
   petAvatar: document.querySelector("#pet-avatar"),
   petName: document.querySelector("#pet-name"),
   evolutionName: document.querySelector("#evolution-name"),
@@ -136,6 +226,7 @@ const els = {
   demoButton: document.querySelector("#demo-button"),
   hintButton: document.querySelector("#hint-button"),
   nextButton: document.querySelector("#next-button"),
+  saveButton: document.querySelector("#save-button"),
   rewardModal: document.querySelector("#reward-modal"),
   rewardOptions: document.querySelector("#reward-options"),
   evolutionModal: document.querySelector("#evolution-modal"),
@@ -150,6 +241,34 @@ function currentLesson() {
 
 function shuffle(items) {
   return [...items].sort(() => Math.random() - 0.5);
+}
+
+function chunkLessons(items, size) {
+  const chunks = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
+}
+
+function lessonSetForGalaxy(galaxy) {
+  if (galaxy <= lessonLevels.length) {
+    return lessonLevels[galaxy - 1];
+  }
+  return shuffle(hanziBank).slice(0, 6);
+}
+
+function makeProgressMap(items, existing = {}) {
+  return Object.fromEntries(items.map((item) => [item.char, Boolean(existing[item.char])]));
+}
+
+function setLessonsForGalaxy(galaxy, existingProgress = {}) {
+  lessons = lessonSetForGalaxy(galaxy);
+  choicePool = lessons.map((item) => item.pinyin);
+  state.completed = makeProgressMap(lessons, existingProgress.completed);
+  state.traced = makeProgressMap(lessons, existingProgress.traced);
+  state.traceStarted = makeProgressMap(lessons, existingProgress.traceStarted);
+  if (state.index >= lessons.length) state.index = 0;
 }
 
 function completedCount() {
@@ -204,13 +323,87 @@ function renderPetChoices() {
 
 function startGame(pet) {
   state.selectedPet = pet;
+  state.index = 0;
+  state.score = 0;
+  state.galaxy = 1;
+  state.petLevel = 1;
+  state.xp = 0;
+  state.xpTarget = 100;
   state.equipped = {};
+  state.pendingEvolution = false;
+  state.pendingLevelReward = false;
+  setLessonsForGalaxy(state.galaxy);
   els.startScreen.hidden = true;
   els.gameScreen.hidden = false;
   window.scrollTo(0, 0);
   updatePetVisual();
   renderGearSlots();
   loadLesson("Welcome aboard. Choose the correct pinyin to earn star gear.");
+}
+
+function saveGame() {
+  const saveData = {
+    selectedPetId: state.selectedPet.id,
+    index: state.index,
+    score: state.score,
+    galaxy: state.galaxy,
+    petLevel: state.petLevel,
+    xp: state.xp,
+    xpTarget: state.xpTarget,
+    completed: state.completed,
+    traced: state.traced,
+    equippedIds: Object.keys(state.equipped),
+  };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+  els.coach.textContent = "Progress saved. You can continue from this browser.";
+  if (els.continueButton) els.continueButton.hidden = false;
+}
+
+function readSavedGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function hasSavedGame() {
+  return Boolean(readSavedGame());
+}
+
+function continueSavedGame() {
+  const saveData = readSavedGame();
+  if (!saveData) return;
+  const pet = pets.find((item) => item.id === saveData.selectedPetId) || pets[0];
+  state.selectedPet = pet;
+  state.index = Number(saveData.index) || 0;
+  state.score = Number(saveData.score) || 0;
+  state.galaxy = Math.max(1, Number(saveData.galaxy) || 1);
+  state.petLevel = Math.max(1, Number(saveData.petLevel) || 1);
+  state.xp = Math.max(0, Number(saveData.xp) || 0);
+  state.xpTarget = Math.max(100, Number(saveData.xpTarget) || 100);
+  state.equipped = {};
+  setLessonsForGalaxy(state.galaxy, {
+    completed: saveData.completed || {},
+    traced: saveData.traced || {},
+  });
+  currentGearPool().forEach((gear) => {
+    if ((saveData.equippedIds || []).includes(gear.id)) state.equipped[gear.id] = gear;
+  });
+  state.strokeDemoPlaying = false;
+  state.pendingEvolution = false;
+  state.pendingLevelReward = false;
+  els.startScreen.hidden = true;
+  els.gameScreen.hidden = false;
+  window.scrollTo(0, 0);
+  updatePetVisual();
+  renderGearSlots();
+  loadLesson("Save loaded. Continue your galaxy mission.");
+}
+
+function updateSaveButton() {
+  if (els.continueButton) els.continueButton.hidden = !hasSavedGame();
 }
 
 function updatePetVisual() {
@@ -543,13 +736,8 @@ function finishGalaxy() {
   addXp(60, "Galaxy complete! +60 pet XP.");
   window.setTimeout(() => {
     state.galaxy += 1;
-    const levelIndex = (state.galaxy - 1) % lessonLevels.length;
-    lessons = lessonLevels[levelIndex];
-    choicePool = lessons.map((item) => item.pinyin);
-    state.completed = Object.fromEntries(lessons.map((item) => [item.char, false]));
-    state.traced = Object.fromEntries(lessons.map((item) => [item.char, false]));
-    state.traceStarted = Object.fromEntries(lessons.map((item) => [item.char, false]));
     state.index = 0;
+    setLessonsForGalaxy(state.galaxy);
     loadLesson(`Galaxy ${state.galaxy} begins. New characters are online.`);
   }, 900);
 }
@@ -646,9 +834,11 @@ function buildWriter(character) {
 function playStrokeDemo({ auto = false, onComplete } = {}) {
   const lesson = currentLesson();
   const round = state.round;
+  const shouldResumeTrace = !auto && state.completed[lesson.char] && !state.traced[lesson.char];
   if (state.traceStarted[lesson.char] && !state.traced[lesson.char]) {
-    els.writerStatus.textContent = "Finish this trace first, then try the stroke demo on the next character.";
-    return false;
+    state.traceStarted[lesson.char] = false;
+    if (state.writer) state.writer.cancelQuiz();
+    updateTraceVisual();
   }
   if (state.strokeDemoPlaying) {
     els.writerStatus.textContent = "Stroke demo is already playing.";
@@ -679,6 +869,7 @@ function playStrokeDemo({ auto = false, onComplete } = {}) {
       els.writerStatus.textContent = auto
         ? "Stroke demo done. Now trace directly in the grid."
         : "Demo done. Trace for bonus XP.";
+      if (shouldResumeTrace) startTraceWhenWriterReady(round);
       if (onComplete) onComplete();
     },
   });
@@ -808,11 +999,14 @@ els.writerFrame.addEventListener("pointerdown", () => {
 });
 els.hintButton.addEventListener("click", giveHint);
 els.nextButton.addEventListener("click", goToNextLesson);
+els.saveButton.addEventListener("click", saveGame);
+els.continueButton.addEventListener("click", continueSavedGame);
 els.evolutionClose.addEventListener("click", () => {
   els.evolutionModal.hidden = true;
 });
 
 window.addEventListener("load", () => {
   renderPetChoices();
+  updateSaveButton();
   updateStats();
 });
