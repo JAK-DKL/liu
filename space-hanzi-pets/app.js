@@ -336,7 +336,7 @@ function updateTraceVisual() {
   const lesson = currentLesson();
   els.writerFrame.classList.toggle(
     "trace-ready",
-    state.completed[lesson.char] && !state.traced[lesson.char] && !state.strokeDemoPlaying,
+    state.traceStarted[lesson.char] && !state.traced[lesson.char] && !state.strokeDemoPlaying,
   );
   els.writerFrame.classList.toggle("trace-complete", Boolean(state.traced[lesson.char]));
 }
@@ -602,11 +602,7 @@ function playStrokeDemo({ auto = false, onComplete } = {}) {
       ? "Stroke demo is still loading. Trace will unlock as soon as it is ready."
       : "The stroke demo is still loading.";
     if (auto) {
-      window.setTimeout(() => {
-        if (round !== state.round) return;
-        startTrace();
-        showPendingProgressModals();
-      }, 350);
+      startTraceWhenWriterReady(round);
     }
     return false;
   }
@@ -637,14 +633,29 @@ function animateCharacter() {
 }
 
 function playAutoStrokeDemoThenTrace() {
+  const round = state.round;
   const started = playStrokeDemo({
     auto: true,
     onComplete() {
-      startTrace();
+      startTraceWhenWriterReady(round);
       window.setTimeout(() => showPendingProgressModals(), 300);
     },
   });
   if (!started) updateTraceVisual();
+}
+
+function startTraceWhenWriterReady(round, attempts = 0) {
+  if (round !== state.round) return;
+  if (state.writerReady && state.writer) {
+    startTrace();
+    return;
+  }
+  if (attempts >= 20) {
+    els.writerStatus.textContent = "Trace mode is still loading. Tap the grid once it is ready.";
+    updateTraceVisual();
+    return;
+  }
+  window.setTimeout(() => startTraceWhenWriterReady(round, attempts + 1), 180);
 }
 
 function startTrace() {
@@ -677,6 +688,9 @@ function startTrace() {
   state.writer.showOutline();
   els.writerStatus.textContent = "Trace the strokes in order for bonus pet XP.";
   state.writer.quiz({
+    onLoadCharDataSuccess() {
+      updateTraceVisual();
+    },
     onCorrectStroke(strokeData) {
       els.writerStatus.textContent = `Good stroke. ${strokeData.strokesRemaining} left.`;
     },
