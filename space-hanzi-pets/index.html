@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Star Pets Hanzi Quest</title>
-    <link rel="stylesheet" href="styles.css?v=mobile-one-screen-4" />
+    <link rel="stylesheet" href="styles.css?v=reward-fx-1" />
     <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js" defer></script>
-    <script src="app.js?v=trace-direct-1" defer></script>
+    <script src="app.js?v=reward-fx-1" defer></script>
   </head>
   <body>
     <div class="space-bg" aria-hidden="true">
@@ -86,36 +86,6 @@
                 <span id="gear-count">0 equipped</span>
               </div>
               <div id="gear-slots" class="gear-slots"></div>
-              <div class="set-preview" aria-label="Full gear set preview">
-                <div class="set-preview-copy">
-                  <p class="label">Full Set Preview</p>
-                  <strong id="full-set-count">0 / 8 collected</strong>
-                </div>
-                <div class="mini-stage">
-                  <div id="full-set-avatar" class="pet-avatar pet-fox evo-1">
-                    <span class="ear left-ear"></span>
-                    <span class="ear right-ear"></span>
-                    <span class="face">
-                      <span class="eye left-eye"></span>
-                      <span class="eye right-eye"></span>
-                      <span class="nose"></span>
-                      <span class="smile"></span>
-                    </span>
-                    <span class="body"></span>
-                    <span class="tail"></span>
-                    <span class="gear gear-helmet"></span>
-                    <span class="gear gear-jetpack"></span>
-                    <span class="gear gear-badge"></span>
-                    <span class="gear gear-boots left-boot"></span>
-                    <span class="gear gear-boots right-boot"></span>
-                    <span class="gear gear-cape"></span>
-                    <span class="gear gear-shield"></span>
-                    <span class="gear gear-orb"></span>
-                    <span class="gear gear-gloves left-glove"></span>
-                    <span class="gear gear-gloves right-glove"></span>
-                  </div>
-                </div>
-              </div>
             </section>
           </aside>
 
@@ -192,5 +162,7 @@
         <button id="evolution-close" type="button">Continue</button>
       </div>
     </div>
+
+    <div id="fx-layer" class="fx-layer" aria-hidden="true"></div>
   </body>
 </html>
