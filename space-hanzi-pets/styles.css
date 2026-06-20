@@ -486,6 +486,11 @@ h2 {
   margin-top: 12px;
 }
 
+.quiz-card {
+  display: grid;
+  align-content: start;
+}
+
 .choices {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -518,6 +523,106 @@ h2 {
   margin: 0;
   color: var(--muted);
   font-weight: 800;
+}
+
+.gear-orbit-preview {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid rgba(142, 226, 255, 0.32);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 76% 32%, rgba(255, 209, 102, 0.16), transparent 4.8rem),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 116px;
+  gap: 10px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.gear-orbit-preview .label {
+  margin-bottom: 0.2rem;
+}
+
+.gear-orbit-preview strong {
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.gear-orbit-stage {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  margin-left: auto;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(97, 231, 255, 0.2), transparent 36%),
+    conic-gradient(from 20deg, rgba(97, 231, 255, 0.3), rgba(255, 116, 212, 0.22), rgba(255, 209, 102, 0.28), rgba(97, 231, 255, 0.3));
+  box-shadow: inset 0 0 0 1px rgba(142, 226, 255, 0.26), 0 0 22px rgba(97, 231, 255, 0.16);
+  animation: orbitPulse 2.8s ease-in-out infinite;
+}
+
+.gear-orbit-stage::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed rgba(244, 251, 255, 0.34);
+  border-radius: 50%;
+  animation: orbitSpin 8s linear infinite;
+}
+
+.gear-orbit-avatar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), var(--green));
+  color: #071432;
+  display: grid;
+  place-items: center;
+  font-size: 1.08rem;
+  font-weight: 1000;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 18px rgba(124, 255, 178, 0.34);
+  animation: previewBob 2.1s ease-in-out infinite;
+}
+
+.orbit-gear {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  --orbit-radius: 42px;
+  width: 34px;
+  height: 28px;
+  padding: 3px;
+  border: 1px solid rgba(142, 226, 255, 0.38);
+  border-radius: 8px;
+  background: rgba(8, 13, 45, 0.82);
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateX(var(--orbit-radius)) rotate(var(--counter-angle));
+  animation: orbitGear 5.4s linear var(--orbit-delay) infinite;
+}
+
+.orbit-gear .gear-art {
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-gear.is-locked {
+  opacity: 0.45;
+  filter: saturate(0.6);
+}
+
+.orbit-gear.is-online {
+  opacity: 1;
+  border-color: rgba(124, 255, 178, 0.72);
+  box-shadow: 0 0 16px rgba(124, 255, 178, 0.26);
 }
 
 .writer-frame {
@@ -1538,6 +1643,43 @@ h2 {
     line-height: 1.2;
   }
 
+  .gear-orbit-preview {
+    margin-top: 7px;
+    padding: 7px;
+    grid-template-columns: minmax(0, 1fr) 82px;
+    gap: 5px;
+  }
+
+  .gear-orbit-preview .label {
+    font-size: 0.58rem;
+  }
+
+  .gear-orbit-preview strong {
+    font-size: 0.72rem;
+  }
+
+  .gear-orbit-stage {
+    width: 78px;
+    height: 78px;
+  }
+
+  .gear-orbit-stage::before {
+    inset: 12px;
+  }
+
+  .gear-orbit-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.86rem;
+  }
+
+  .orbit-gear {
+    --orbit-radius: 30px;
+    width: 25px;
+    height: 21px;
+    padding: 2px;
+  }
+
   .writer-frame {
     width: min(100%, 156px);
     margin: 6px auto;
@@ -1671,6 +1813,30 @@ h2 {
 @keyframes floatOrb {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes orbitPulse {
+  0%, 100% { transform: scale(0.98); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes previewBob {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-4px); }
+}
+
+@keyframes orbitGear {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateX(var(--orbit-radius)) rotate(var(--counter-angle));
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(var(--orbit-end)) translateX(var(--orbit-radius)) rotate(var(--counter-end));
+  }
 }
 
 @keyframes flyToPet {
