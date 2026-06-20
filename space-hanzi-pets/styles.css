@@ -195,6 +195,10 @@ h2 {
   line-height: 1.55;
 }
 
+.continue-button {
+  margin-top: 1rem;
+}
+
 .pet-select {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -246,6 +250,16 @@ h2 {
   color: var(--gold);
   font-size: 1.35rem;
   line-height: 1;
+}
+
+.hud-actions {
+  display: flex;
+  align-items: center;
+}
+
+.hud-actions button {
+  padding: 0.62rem 0.9rem;
+  white-space: nowrap;
 }
 
 .game-grid {
@@ -811,23 +825,62 @@ h2 {
 }
 
 .pet-avatar.evo-2 {
-  transform: translateY(0) scale(1.08);
-  filter: drop-shadow(0 0 20px rgba(97, 231, 255, 0.36));
+  transform: translateY(0) scale(1);
+  filter: drop-shadow(0 0 20px rgba(97, 231, 255, 0.38));
 }
 
 .pet-avatar.evo-3 {
-  transform: translateY(-4px) scale(1.15);
+  transform: translateY(-2px) scale(1.03);
   filter: drop-shadow(0 0 34px rgba(255, 209, 102, 0.46));
+}
+
+.pet-avatar.evo-2 .face {
+  box-shadow: inset 0 0 0 5px rgba(97, 231, 255, 0.16), 0 0 24px rgba(97, 231, 255, 0.22);
+}
+
+.pet-avatar.evo-2 .body {
+  box-shadow: inset 0 -12px 0 rgba(97, 231, 255, 0.12);
+}
+
+.pet-avatar.evo-2 .tail {
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.pet-avatar.evo-2::before {
+  content: "";
+  position: absolute;
+  left: 72px;
+  top: -6px;
+  z-index: 5;
+  width: 46px;
+  height: 30px;
+  border-radius: 18px 18px 10px 10px;
+  background:
+    radial-gradient(circle at 50% 18%, #ffffff 0 12%, transparent 13%),
+    linear-gradient(135deg, var(--gear-secondary), var(--gear-accent));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--gear-secondary) 42%, transparent);
 }
 
 .pet-avatar.evo-3::after {
   content: "";
   position: absolute;
-  inset: 4px -22px auto;
-  height: 44px;
+  inset: -10px -14px auto;
+  height: 36px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 209, 102, 0.86);
+  border: 3px solid rgba(255, 209, 102, 0.86);
   transform: rotate(-9deg);
+}
+
+.pet-avatar.evo-3 .face {
+  box-shadow: inset 0 0 0 6px rgba(255, 209, 102, 0.18), 0 0 28px rgba(255, 209, 102, 0.24);
+}
+
+.pet-avatar.evo-3 .body {
+  box-shadow: inset 0 -14px 0 rgba(255, 209, 102, 0.16);
+}
+
+.pet-avatar.evo-3 .tail {
+  filter: brightness(1.16) saturate(1.32);
 }
 
 .ear {
@@ -1520,6 +1573,12 @@ h2 {
 
   .hud-stats strong {
     font-size: 1rem;
+  }
+
+  .hud-actions button {
+    width: 100%;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.72rem;
   }
 
   .pet-card,
